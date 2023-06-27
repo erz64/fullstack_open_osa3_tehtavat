@@ -88,13 +88,14 @@ app.post('/api/persons', (req, res) => {
             error: "Name must be unique"
         })
     }
-    const person = {
-        id: generateId(),
+    const person = new Person({
         name: body.name,
         number: body.number,
-    }
-    persons = persons.concat(person)
-    res.json(person)
+    })
+    person.save().then(savedPerson => {
+        res.json(savedPerson)
+    })
+
 })
 const PORT = 3001
 app.listen(PORT, () => {
