@@ -41,7 +41,7 @@ app.get('/info', (req, res) => {
 })
 
 app.get('/api/persons', (req, res) => {
-    Person.find({}).then(persons =>{
+    Person.find({}).then(persons => {
         res.json(persons)
     })
 })
@@ -57,11 +57,15 @@ app.get('/api/persons/:id', (req, res) => {
     }
 })
 
-app.delete('/api/persons/:id', (req, res) => {
+app.delete('/api/persons/:id', (req, res, next) => {
     const id = Number(req.params.id)
-    persons = persons.filter(person => person.id !== id)
+    Person.findByIdAndDelete(id)
+    .then(result => {
+            res.status(204).end()
+        })
+    .catch(error => next(error))
 
-    res.status(204).end()
+
 })
 const generateId = () => {
     const id = Math.floor(Math.random() * (10000000 - 1) + 1);
@@ -97,6 +101,21 @@ app.post('/api/persons', (req, res) => {
     })
 
 })
+
+const errorHandler = (error, req, res, next) => {
+    console.error(error.message)
+
+    if (error.name === 'CastError') {
+        return res.status(400).send({
+            error: 'malformatted id'
+        })
+    }
+
+    next(error)
+}
+
+app.use(errorHandler)
+
 const PORT = 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
