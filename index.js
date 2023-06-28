@@ -58,12 +58,12 @@ app.get('/api/persons/:id', (req, res) => {
 })
 
 app.delete('/api/persons/:id', (req, res, next) => {
-    const id = Number(req.params.id)
+    const id = req.params.id
     Person.findByIdAndRemove(id)
-    .then(result => {
+        .then(result => {
             res.status(204).end()
         })
-    .catch(error => next(error))
+        .catch(error => next(error))
 
 
 })

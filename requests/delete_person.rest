@@ -1,1 +1,1 @@
-DELETE https://puh-luettelo-fs.onrender.com/api/persons/2
+DELETE https://puh-luettelo-fs.onrender.com/api/persons/2649b020304b79ed73079141c
