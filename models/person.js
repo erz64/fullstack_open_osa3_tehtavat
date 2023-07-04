@@ -13,9 +13,27 @@ mongoose.connect(url)
     console.log('error connecting to MongoDB:', error.message)
   })
 
+
+const phoneNumberValidator = (val) => {
+  return /^[0-9]{2,3}-\d{5,}/.test(val);
+}
+        
+
 const personSchema = new mongoose.Schema({
-  name: String,
-  number: Number,
+  name: {
+    type: String,
+    minlength: 3,
+    required: true
+  },
+  number: {
+    type: String,
+    minlength: 8,
+    required: true,
+    validate: {
+      validator: phoneNumberValidator,
+      message: 'First two or three numbers must be followed by "-" and rest of the numbers'
+    }
+  }
 })
 
 personSchema.set('toJSON', {
